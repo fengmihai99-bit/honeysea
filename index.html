@@ -1,769 +1,451 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Little Dusk · 你的黄昏日记</title>
+
+<title>Little Dusk</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600&display=swap');
 
-:root {
-    --sun: #ffd56a;
-    --gold: #f3a65a;
-    --pink: #d77aa8;
-    --purple: #73558f;
-    --deep: #292044;
-    --night: #17152d;
-    --glass: rgba(255,255,255,.13);
-    --glass-border: rgba(255,255,255,.2);
-    --text: #fff8ef;
-    --muted: rgba(255,248,239,.68);
-    --accent: #f7c96d;
+*{
+    box-sizing:border-box;
 }
 
-* {
-    box-sizing: border-box;
-}
+body{
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    color: var(--text);
-    font-family: "DM Sans", "Noto Serif SC", sans-serif;
+    margin:0;
+    min-height:100vh;
+
+    font-family:
+    "Noto Serif SC",
+    serif;
+
+    color:white;
+
+    transition:2s;
+
     background:
-        radial-gradient(circle at 50% 37%, var(--sun) 0%, var(--gold) 18%, var(--pink) 42%, var(--purple) 67%, var(--deep) 100%);
-    background-attachment: fixed;
-    overflow-x: hidden;
-    transition: background 2s ease;
+    linear-gradient(
+        160deg,
+        #f7c978,
+        #c87aa3,
+        #62528b
+    );
+
 }
 
-/* ---------- 星空 ---------- */
 
-.stars {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    opacity: .45;
-    transition: opacity 2s ease;
+.container{
+
+    width:90%;
+    max-width:900px;
+
+    margin:auto;
+
+    padding:40px 0;
+
 }
 
-.star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: white;
-    border-radius: 50%;
-    animation: twinkle 3s infinite ease-in-out;
-}
 
-@keyframes twinkle {
-    0%,100% { opacity: .25; }
-    50% { opacity: 1; }
-}
 
-/* ---------- 页面 ---------- */
+.glass{
 
-.app {
-    position: relative;
-    z-index: 2;
-    width: min(1100px, 92%);
-    margin: 0 auto;
-    padding: 55px 0 80px;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 55px;
-}
-
-.logo {
-    font-family: Georgia, serif;
-    font-size: 21px;
-    letter-spacing: .08em;
-}
-
-.time {
-    font-size: 13px;
-    color: var(--muted);
-}
-
-/* ---------- Hero ---------- */
-
-.hero {
-    display: grid;
-    grid-template-columns: 1.25fr .75fr;
-    gap: 28px;
-    align-items: stretch;
-}
-
-.hero-card,
-.card {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border-radius: 28px;
-    box-shadow: 0 20px 60px rgba(20,10,50,.16);
-}
-
-.hero-card {
-    padding: 48px;
-    min-height: 330px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-}
-
-.eyebrow {
-    font-size: 12px;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 12px;
-}
-
-h1 {
-    font-family: "Noto Serif SC", serif;
-    font-weight: 500;
-    font-size: clamp(42px, 7vw, 78px);
-    line-height: 1;
-    margin: 0 0 18px;
-}
-
-.subtitle {
-    color: var(--muted);
-    line-height: 1.8;
-    max-width: 520px;
-    margin: 0;
-}
-
-/* ---------- Profile ---------- */
-
-.profile {
-    padding: 34px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.profile-label {
-    color: var(--muted);
-    font-size: 12px;
-    margin-bottom: 8px;
-}
-
-.profile input,
-.profile select,
-.diary textarea {
-    width: 100%;
-    border: 1px solid rgba(255,255,255,.18);
-    background: rgba(0,0,0,.12);
-    color: white;
-    border-radius: 14px;
-    padding: 13px 14px;
-    outline: none;
-    font: inherit;
-}
-
-.profile select option {
-    color: #222;
-}
-
-.profile input::placeholder,
-.diary textarea::placeholder {
-    color: rgba(255,255,255,.45);
-}
-
-.profile-row {
-    margin-bottom: 18px;
-}
-
-.save-profile,
-.save-diary {
-    width: 100%;
-    border: 0;
-    border-radius: 14px;
-    padding: 13px;
-    cursor: pointer;
-    background: var(--accent);
-    color: #392b25;
-    font-weight: 600;
-    transition: transform .2s ease, filter .2s ease;
-}
-
-.save-profile:hover,
-.save-diary:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.06);
-}
-
-/* ---------- Main ---------- */
-
-.main-grid {
-    display: grid;
-    grid-template-columns: 1fr .7fr;
-    gap: 28px;
-    margin-top: 28px;
-}
-
-.card {
-    padding: 30px;
-}
-
-.card-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 22px;
-}
-
-.card-title h2 {
-    font-family: "Noto Serif SC", serif;
-    font-size: 21px;
-    font-weight: 500;
-    margin: 0;
-}
-
-.small {
-    color: var(--muted);
-    font-size: 12px;
-}
-
-/* ---------- Diary ---------- */
-
-.diary-date {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 15px;
-}
-
-.diary textarea {
-    min-height: 230px;
-    resize: vertical;
-    line-height: 1.8;
-    font-family: "Noto Serif SC", serif;
-}
-
-.diary-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-}
-
-.diary-actions button {
-    flex: 1;
-}
-
-.secondary {
-    background: rgba(255,255,255,.12);
-    color: white;
-    border: 1px solid rgba(255,255,255,.18);
-    border-radius: 14px;
-    cursor: pointer;
-}
-
-/* ---------- Entries ---------- */
-
-.entries {
-    margin-top: 28px;
-}
-
-.entry {
-    padding: 18px 0;
-    border-bottom: 1px solid rgba(255,255,255,.12);
-}
-
-.entry:last-child {
-    border-bottom: 0;
-}
-
-.entry-date {
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 8px;
-}
-
-.entry-text {
-    font-family: "Noto Serif SC", serif;
-    line-height: 1.8;
-    white-space: pre-wrap;
-}
-
-.delete {
-    margin-top: 10px;
-    border: 0;
-    background: transparent;
-    color: rgba(255,255,255,.42);
-    font-size: 11px;
-    cursor: pointer;
-}
-
-/* ---------- Music ---------- */
-
-.music {
-    text-align: center;
-}
-
-.album {
-    width: 145px;
-    height: 145px;
-    margin: 8px auto 22px;
-    border-radius: 50%;
     background:
-        radial-gradient(circle at 50% 50%, #f8d58c 0 8%, transparent 9%),
-        radial-gradient(circle at 50% 50%, #8d5b87 0 24%, transparent 25%),
-        radial-gradient(circle at 50% 50%, #473664 0 42%, transparent 43%),
-        linear-gradient(135deg, #f3ad68, #73558f);
-    box-shadow: 0 15px 45px rgba(20,10,50,.3);
-    animation: rotate 16s linear infinite;
-    animation-play-state: paused;
+    rgba(255,255,255,.15);
+
+    backdrop-filter:blur(15px);
+
+    border-radius:30px;
+
+    padding:30px;
+
+    margin-bottom:25px;
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,.15);
+
 }
 
-.album.playing {
-    animation-play-state: running;
+
+
+h1{
+
+    font-size:55px;
+
+    margin:10px 0;
+
 }
 
-@keyframes rotate {
-    to { transform: rotate(360deg); }
+
+.subtitle{
+
+    opacity:.8;
+
 }
 
-.song-title {
-    font-family: Georgia, serif;
-    font-size: 21px;
+
+
+input,select,textarea{
+
+    width:100%;
+
+    padding:15px;
+
+    margin-top:10px;
+
+    border:none;
+
+    border-radius:15px;
+
+    background:
+    rgba(255,255,255,.18);
+
+    color:white;
+
+    font-size:16px;
+
 }
 
-.artist {
-    color: var(--muted);
-    font-size: 13px;
-    margin-top: 5px;
+
+
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    margin-top:15px;
+
+    border:none;
+
+    border-radius:20px;
+
+    background:#ffd77a;
+
+    color:#4b3555;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
 }
 
-.music-button {
-    display: inline-block;
-    margin-top: 22px;
-    padding: 11px 20px;
-    border-radius: 999px;
-    text-decoration: none;
-    background: rgba(255,255,255,.13);
-    border: 1px solid rgba(255,255,255,.18);
-    color: white;
-    transition: .2s;
+
+
+#world{
+
+    font-size:14px;
+
+    letter-spacing:3px;
+
+    opacity:.8;
+
 }
 
-.music-button:hover {
-    transform: translateY(-2px);
-    background: rgba(255,255,255,.2);
+
+
+#quote{
+
+    line-height:2;
+
+    font-size:18px;
+
 }
 
-/* ---------- Quote ---------- */
 
-.quote {
-    margin-top: 28px;
-    text-align: center;
-    padding: 38px;
+
+textarea{
+
+    min-height:200px;
+
 }
 
-.quote p {
-    font-family: "Noto Serif SC", serif;
-    font-size: 17px;
-    line-height: 1.9;
-    margin: 0;
-}
 
-.quote span {
-    display: block;
-    color: var(--muted);
-    font-size: 11px;
-    margin-top: 12px;
-}
 
-/* ---------- Responsive ---------- */
-
-@media (max-width: 760px) {
-    .app {
-        padding-top: 28px;
-    }
-
-    header {
-        margin-bottom: 30px;
-    }
-
-    .hero,
-    .main-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-card {
-        padding: 32px;
-        min-height: 300px;
-    }
-
-    .profile,
-    .card {
-        padding: 25px;
-    }
-
-    h1 {
-        font-size: 52px;
-    }
-}
 </style>
+
+
 </head>
+
 
 <body>
 
-<div class="stars" id="stars"></div>
 
-<div class="app">
+<div class="container">
 
-<header>
-    <div class="logo">little dusk.</div>
-    <div class="time" id="clock"></div>
-</header>
 
-<section class="hero">
+<div class="glass">
 
-    <div class="hero-card">
-        <div class="eyebrow">your little evening</div>
-        <h1 id="greeting">Good evening.</h1>
-        <p class="subtitle" id="intro">
-            给今天留一点位置。<br>
-            这里是你的黄昏。
-        </p>
-    </div>
 
-    <div class="profile">
+<div id="world">
+YOUR DUSK
+</div>
 
-        <div>
-            <div class="profile-row">
-                <div class="profile-label">你的名字</div>
-                <input id="nameInput" placeholder="输入一个名字">
-            </div>
 
-            <div class="profile-row">
-                <div class="profile-label">MBTI</div>
-                <select id="mbtiInput">
-                    <option value="">选择你的 MBTI</option>
-                    <option>INTJ</option>
-                    <option>INTP</option>
-                    <option>ENTJ</option>
-                    <option>ENTP</option>
-                    <option>INFJ</option>
-                    <option>INFP</option>
-                    <option>ENFJ</option>
-                    <option>ENFP</option>
-                    <option>ISTJ</option>
-                    <option>ISFJ</option>
-                    <option>ESTJ</option>
-                    <option>ESFJ</option>
-                    <option>ISTP</option>
-                    <option>ISFP</option>
-                    <option>ESTP</option>
-                    <option>ESFP</option>
-                </select>
-            </div>
-        </div>
+<h1 id="title">
+Good evening.
+</h1>
 
-        <button class="save-profile" onclick="saveProfile()">进入我的黄昏</button>
 
-    </div>
+<p class="subtitle" id="intro">
 
-</section>
+这里会成为你的黄昏。
 
-<section class="main-grid">
+</p>
 
-    <div class="card diary">
-
-        <div class="card-title">
-            <h2>今天想写些什么？</h2>
-            <span class="small" id="date"></span>
-        </div>
-
-        <div class="diary-date">Dear diary,</div>
-
-        <textarea id="diaryText" placeholder="今天发生了什么？或者什么都不写，只留下一句话。"></textarea>
-
-        <div class="diary-actions">
-            <button class="save-diary" onclick="saveDiary()">保存今天</button>
-            <button class="secondary" onclick="clearDiary()">清空</button>
-        </div>
-
-    </div>
-
-    <div class="card music">
-
-        <div class="card-title">
-            <h2>Now playing</h2>
-            <span class="small">for your evening</span>
-        </div>
-
-        <div class="album" id="album"></div>
-
-        <div class="song-title">Freezing</div>
-        <div class="artist">Bren Joy</div>
-
-        <a
-            class="music-button"
-            href="https://163cn.tv/bb4NWkvC"
-            target="_blank"
-            rel="noopener noreferrer"
-            onclick="startMusicAnimation()"
-        >
-            在网易云音乐打开
-        </a>
-
-    </div>
-
-</section>
-
-<section class="card entries">
-
-    <div class="card-title">
-        <h2>你的日记</h2>
-        <span class="small">saved locally</span>
-    </div>
-
-    <div id="entriesList">
-        <div class="small">这里会留下你写过的每一个黄昏。</div>
-    </div>
-
-</section>
-
-<section class="card quote">
-    <p id="quoteText">“有些日子不需要被记住，只需要被好好经过。”</p>
-    <span>little dusk · a place for your thoughts</span>
-</section>
 
 </div>
 
+
+
+<div class="glass">
+
+
+<h2>
+创建你的黄昏
+</h2>
+
+
+<input
+id="name"
+placeholder="你的名字">
+
+
+<select id="mbti">
+
+
+<option value="">
+选择 MBTI
+</option>
+
+
+<option>INFP</option>
+<option>INFJ</option>
+<option>INTJ</option>
+<option>INTP</option>
+
+<option>ENFP</option>
+<option>ENFJ</option>
+<option>ENTJ</option>
+<option>ENTP</option>
+
+<option>ISFP</option>
+<option>ISFJ</option>
+<option>ISTJ</option>
+<option>ISTP</option>
+
+<option>ESFP</option>
+<option>ESFJ</option>
+<option>ESTJ</option>
+<option>ESTP</option>
+
+
+</select>
+
+
+
+<button onclick="createDusk()">
+
+进入我的黄昏
+
+</button>
+
+
+</div>
+
+
+
+
+<div class="glass">
+
+
+<h2 id="diaryTitle">
+
+今日记录
+
+</h2>
+
+
+<textarea
+placeholder="写下今天吧……">
+</textarea>
+
+
+</div>
+
+
+
+
+<div class="glass">
+
+
+<h2>
+今晚给你的话
+</h2>
+
+
+<p id="quote">
+
+等待你的黄昏。
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
 <script>
 
-/* ---------- 星空 ---------- */
 
-const stars = document.getElementById("stars");
+const worlds={
 
-for (let i = 0; i < 75; i++) {
-    const star = document.createElement("div");
-    star.className = "star";
-    star.style.left = Math.random() * 100 + "%";
-    star.style.top = Math.random() * 70 + "%";
-    star.style.animationDelay = Math.random() * 3 + "s";
-    stars.appendChild(star);
+
+INFP:{
+
+world:"梦境黄昏",
+
+diary:"写给未来的自己",
+
+intro:
+"你拥有一片可以藏下想象和回忆的天空。",
+
+quote:
+"你总能发现别人忽略的细节。今晚不用急着解释自己，让黄昏替你保存那些柔软的想法。",
+
+color:
+"linear-gradient(160deg,#f6cf83,#c18ac5,#62528b)"
+
+},
+
+
+INTJ:{
+
+world:"星际观测台",
+
+diary:"今晚的思考",
+
+intro:
+"这里属于观察、规划和探索。",
+
+quote:
+"计划可以暂停一晚。观察世界，也是一种收集信息。",
+
+color:
+"linear-gradient(160deg,#55558a,#34345d,#17172d)"
+
+},
+
+
+ENFP:{
+
+world:"旅行者黄昏",
+
+diary:"今日发现",
+
+intro:
+"把遇见的小惊喜都收藏起来。",
+
+quote:
+"你的世界总有新的入口，保持好奇，它会带你去更远的地方。",
+
+color:
+"linear-gradient(160deg,#ffd36a,#f18d6d,#a85b91)"
+
+},
+
+
+ISFP:{
+
+world:"艺术家的窗边",
+
+diary:"今日喜欢",
+
+intro:
+"记录那些让你心动的小瞬间。",
+
+quote:
+"美好的事情不一定宏大，有时候只是夕阳落下时的一阵风。",
+
+color:
+"linear-gradient(160deg,#ffe1a8,#e5a6a6,#80689c)"
+
 }
 
-/* ---------- 时间 ---------- */
 
-function updateClock() {
-    const now = new Date();
+};
 
-    document.getElementById("clock").textContent =
-        now.toLocaleTimeString("zh-CN", {
-            hour: "2-digit",
-            minute: "2-digit"
-        });
 
-    document.getElementById("date").textContent =
-        now.toLocaleDateString("zh-CN", {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        });
 
-    updateSky(now.getHours());
+function createDusk(){
+
+
+let name=
+document.getElementById("name").value;
+
+
+let mbti=
+document.getElementById("mbti").value;
+
+
+
+if(!worlds[mbti]){
+
+alert("这个版本暂时先支持部分 MBTI，下一版补全16种。");
+
+return;
+
 }
 
-function updateSky(hour) {
 
-    if (hour >= 5 && hour < 16) {
-        document.body.style.background =
-            "radial-gradient(circle at 50% 35%, #ffe49a 0%, #f4b46e 25%, #c7799e 55%, #73558f 80%, #292044 100%)";
-        stars.style.opacity = ".1";
 
-    } else if (hour >= 16 && hour < 19) {
-        document.body.style.background =
-            "radial-gradient(circle at 50% 42%, #ffd56a 0%, #f19a63 25%, #c86f9c 48%, #73558f 72%, #292044 100%)";
-        stars.style.opacity = ".25";
+let data=worlds[mbti];
 
-    } else if (hour >= 19 && hour < 22) {
-        document.body.style.background =
-            "radial-gradient(circle at 50% 40%, #d8898e 0%, #80558e 35%, #4c416f 65%, #292044 100%)";
-        stars.style.opacity = ".55";
 
-    } else {
-        document.body.style.background =
-            "radial-gradient(circle at 50% 30%, #655381 0%, #3b315d 45%, #17152d 100%)";
-        stars.style.opacity = ".9";
-    }
+
+document.body.style.background=
+data.color;
+
+
+
+document.getElementById("world").innerHTML=
+data.world;
+
+
+
+document.getElementById("title").innerHTML=
+"Good evening, "+name+".";
+
+
+
+document.getElementById("intro").innerHTML=
+data.intro;
+
+
+
+document.getElementById("quote").innerHTML=
+data.quote;
+
+
+
+document.getElementById("diaryTitle").innerHTML=
+data.diary;
+
+
+
 }
 
-updateClock();
-setInterval(updateClock, 1000);
 
-/* ---------- Profile ---------- */
-
-function saveProfile() {
-
-    const name = document.getElementById("nameInput").value.trim();
-    const mbti = document.getElementById("mbtiInput").value;
-
-    localStorage.setItem("duskName", name);
-    localStorage.setItem("duskMBTI", mbti);
-
-    applyMBTI(name, mbti);
-}
-
-function loadProfile() {
-
-    const name = localStorage.getItem("duskName") || "";
-    const mbti = localStorage.getItem("duskMBTI") || "";
-
-    document.getElementById("nameInput").value = name;
-    document.getElementById("mbtiInput").value = mbti;
-
-    if (name || mbti) {
-        applyMBTI(name, mbti);
-    }
-}
-
-/* ---------- MBTI 主题 ---------- */
-
-function applyMBTI(name, mbti) {
-
-    const greeting = document.getElementById("greeting");
-    const intro = document.getElementById("intro");
-
-    if (name) {
-        greeting.textContent = `Good evening, ${name}.`;
-    } else {
-        greeting.textContent = "Good evening.";
-    }
-
-    let message = "给今天留一点位置。这里是你的黄昏。";
-
-    if (mbti.includes("I")) {
-        message = "安静一点也没关系。这里永远留给你一块独处的地方。";
-    } else if (mbti.includes("E")) {
-        message = "把今天带回来吧。这里也可以装下你的热闹。";
-    }
-
-    if (mbti.includes("N")) {
-        message += " 让想象力在黄昏里多停留一会儿。";
-    } else if (mbti.includes("S")) {
-        message += " 记下那些真实发生过的小事。";
-    }
-
-    if (mbti.includes("T")) {
-        document.documentElement.style.setProperty("--accent", "#c9b6df");
-    }
-
-    if (mbti.includes("F")) {
-        document.documentElement.style.setProperty("--accent", "#f7c96d");
-    }
-
-    intro.textContent = message;
-}
-
-/* ---------- Diary ---------- */
-
-function saveDiary() {
-
-    const text = document.getElementById("diaryText").value.trim();
-
-    if (!text) return;
-
-    const diaries = JSON.parse(localStorage.getItem("duskDiaries") || "[]");
-
-    diaries.unshift({
-        id: Date.now(),
-        date: new Date().toLocaleString("zh-CN"),
-        text: text
-    });
-
-    localStorage.setItem("duskDiaries", JSON.stringify(diaries));
-
-    document.getElementById("diaryText").value = "";
-
-    renderDiaries();
-}
-
-function clearDiary() {
-    document.getElementById("diaryText").value = "";
-}
-
-function deleteDiary(id) {
-
-    const diaries = JSON.parse(localStorage.getItem("duskDiaries") || "[]");
-
-    const updated = diaries.filter(item => item.id !== id);
-
-    localStorage.setItem("duskDiaries", JSON.stringify(updated));
-
-    renderDiaries();
-}
-
-function renderDiaries() {
-
-    const list = document.getElementById("entriesList");
-
-    const diaries = JSON.parse(localStorage.getItem("duskDiaries") || "[]");
-
-    if (!diaries.length) {
-        list.innerHTML =
-            '<div class="small">这里会留下你写过的每一个黄昏。</div>';
-        return;
-    }
-
-    list.innerHTML = diaries.map(item => `
-        <div class="entry">
-            <div class="entry-date">${escapeHTML(item.date)}</div>
-            <div class="entry-text">${escapeHTML(item.text)}</div>
-            <button class="delete" onclick="deleteDiary(${item.id})">
-                删除这篇
-            </button>
-        </div>
-    `).join("");
-}
-
-function escapeHTML(text) {
-
-    return text
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
-
-/* ---------- 音乐小动画 ---------- */
-
-function startMusicAnimation() {
-    document.getElementById("album").classList.add("playing");
-}
-
-/* ---------- 彩蛋 ---------- */
-
-const quotes = [
-    "“有些日子不需要被记住，只需要被好好经过。”",
-    "“今晚的风，替你把没说完的话带走了。”",
-    "“你可以什么都不做，只在这里坐一会儿。”",
-    "“日落不会催你长大。”",
-    "“今天也辛苦了。剩下的明天再说。”"
-];
-
-const today = new Date().toDateString();
-let quoteIndex = [...today].reduce((sum, char) => sum + char.charCodeAt(0), 0) % quotes.length;
-
-document.getElementById("quoteText").textContent = quotes[quoteIndex];
-
-/* ---------- 初始化 ---------- */
-
-loadProfile();
-renderDiaries();
 
 </script>
 
+
+
 </body>
+
 </html>
